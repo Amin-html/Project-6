@@ -1,8 +1,10 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'  
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'  
 import ProductList from './pages/ProductList'  
 import ProductDetail from './pages/ProductDetail'  
-import Cart from './pages/Cart'  
+import Cart from './pages/Cart'
+import Login from './pages/Login'
+import Register from './pages/Register'  
 
 function App() {  
   return (  
@@ -11,7 +13,9 @@ function App() {
       <Routes>  
         <Route path="/" element={<ProductList />} />  
         <Route path="/products/:id" element={<ProductDetail />} />  
-        <Route path="/cart" element={<Cart />} />  
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />  
       </Routes>  
     </BrowserRouter>  
   )  

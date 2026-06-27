@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
+import { useAuth } from '../context/AuthContext'
 
 function Navbar() {
   const { totalItems } = useCart()
+  const { username, logout } = useAuth()
 
   return (
     <nav style={{
@@ -21,10 +23,12 @@ function Navbar() {
       }}>
         TechShop
       </Link>
+
       <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
         <Link to="/" style={{ color: 'white', textDecoration: 'none' }}>
           Товары
         </Link>
+
         <Link to="/cart" style={{
           background: '#6c3aed',
           color: 'white',
@@ -34,7 +38,6 @@ function Navbar() {
           position: 'relative'
         }}>
           🛒 Корзина
-          {/* Бейдж с количеством товаров */}
           {totalItems > 0 && (
             <span style={{
               position: 'absolute',
@@ -55,6 +58,40 @@ function Navbar() {
             </span>
           )}
         </Link>
+
+        {username ? (
+          <>
+            <span style={{ color: '#aaa' }}>{username}</span>
+            <button
+              onClick={logout}
+              style={{
+                background: 'none',
+                border: '1px solid #e74c3c',
+                color: '#e74c3c',
+                padding: '6px 12px',
+                borderRadius: '5px',
+                cursor: 'pointer'
+              }}
+            >
+              Выйти
+            </button>
+          </>
+        ) : (
+          <>
+            <Link to="/login" style={{ color: 'white', textDecoration: 'none' }}>
+              Войти
+            </Link>
+            <Link to="/register" style={{
+              background: '#6c3aed',
+              color: 'white',
+              padding: '6px 14px',
+              borderRadius: '5px',
+              textDecoration: 'none'
+            }}>
+              Регистрация
+            </Link>
+          </>
+        )}
       </div>
     </nav>
   )

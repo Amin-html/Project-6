@@ -23,4 +23,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # Все API эндпоинты под /api/
     path('api/', include('products.urls')),
+    path('api/auth/', include('accounts.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

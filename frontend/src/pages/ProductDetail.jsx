@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import API from '../api'
+import { useCart } from '../context/CartContext'
 
 function ProductDetail() {
-  // useParams — берём id из URL /products/1
   const { id } = useParams()
+  const { addToCart } = useCart() // Логика внутри компонента
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [added, setAdded] = useState(false) // Стейт внутри компонента
 
   useEffect(() => {
     fetchProduct()
@@ -20,6 +22,14 @@ function ProductDetail() {
       console.error('Ошибка:', err)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleAddToCart = () => {
+    if (product) {
+      addToCart(product)
+      setAdded(true)
+      setTimeout(() => setAdded(false), 2000)
     }
   }
 
@@ -79,22 +89,27 @@ function ProductDetail() {
           <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#6c3aed', marginBottom: '15px' }}>
             ${product.price}
           </p>
+          
           {product.stock > 0 ? (
             <>
               <p style={{ color: '#4ade80', marginBottom: '15px' }}>
                 ✓ В наличии ({product.stock} шт)
               </p>
-              <button style={{
-                width: '100%',
-                padding: '14px',
-                background: '#6c3aed',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                fontSize: '16px',
-                cursor: 'pointer'
-              }}>
-                🛒 Добавить в корзину
+              <button
+                onClick={handleAddToCart}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  background: added ? '#4ade80' : '#6c3aed',
+                  color: added ? '#000' : 'white',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontSize: '16px',
+                  cursor: 'pointer',
+                  transition: 'background 0.3s'
+                }}
+              >
+                {added ? '✅ Добавлено!' : '🛒 Добавить в корзину'}
               </button>
             </>
           ) : (
